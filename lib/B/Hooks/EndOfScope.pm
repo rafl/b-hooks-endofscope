@@ -38,6 +38,8 @@ surrounding scope.
 Registers C<$code> to be executed after the surrounding scope has been
 compiled.
 
+This is exported by default. See L<Sub::Exporter> on how to customize it.
+
 =cut
 
 sub on_scope_end (&) {
@@ -48,6 +50,8 @@ sub on_scope_end (&) {
 }
 
 =head1 SEE ALSO
+
+L<Sub::Exporter>
 
 L<Scope::Guard>
 
