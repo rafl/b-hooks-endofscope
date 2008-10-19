@@ -5,7 +5,7 @@ package B::Hooks::EndOfScope;
 
 use Scope::Guard;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 our $SCOPE_HOOK_KEY = 'SCOPE_END_HOOK';
 
