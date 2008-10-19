@@ -19,12 +19,12 @@ sub foo {
         on_scope_end { $i = 1 };
     };
 
-    is($i, 1);
+    is($i, 1, 'value still set at runtime');
 }
 
 BEGIN {
-    ok($called);
-    is($i, 1)
+    ok($called, 'first callback invoked');
+    is($i, 1, '.. but the second is invoked later')
 }
 
 foo();
