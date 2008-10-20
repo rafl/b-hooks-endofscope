@@ -1,3 +1,6 @@
+0.04  Mon, 20 Oct 2008 12:56:23 +0200
+  * Remove an unused bit from the $^H mask.
+
 0.03  Mon, 20 Oct 2008 06:53:20 +0200
   * Improve testing of multiple hooks.
   * More documentation.
