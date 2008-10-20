@@ -1,3 +1,8 @@
+0.03  Mon, 20 Oct 2008 06:53:20 +0200
+  * Improve testing of multiple hooks.
+  * More documentation.
+  * Require perl 5.8.0.
+
 0.02  Sun, 19 Oct 2008 10:25:15 +0200
   * Specify all dependencies.
 
