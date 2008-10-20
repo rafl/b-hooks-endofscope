@@ -3,6 +3,7 @@ use warnings;
 
 package B::Hooks::EndOfScope;
 
+use 5.008000;
 use Scope::Guard;
 
 our $VERSION = '0.02';
