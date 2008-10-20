@@ -46,7 +46,7 @@ This is exported by default. See L<Sub::Exporter> on how to customize it.
 sub on_scope_end (&) {
     my $cb = shift;
 
-    $^H |= 0x120000;
+    $^H |= 0x020000;
     $^H{ $SCOPE_HOOK_KEY } = [Scope::Guard->new($cb), @{ $^H{ $SCOPE_HOOK_KEY } || [] }];
 }
 
