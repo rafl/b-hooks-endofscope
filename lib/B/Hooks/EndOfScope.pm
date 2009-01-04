@@ -8,8 +8,6 @@ use Variable::Magic;
 
 our $VERSION = '0.04';
 
-our $SCOPE_HOOK_KEY = 'SCOPE_END_HOOK';
-
 use Sub::Exporter -setup => {
     exports => ['on_scope_end'],
     groups  => { default => ['on_scope_end'] },
@@ -43,17 +41,23 @@ This is exported by default. See L<Sub::Exporter> on how to customize it.
 
 =cut
 
-sub on_scope_end (&) {
-    my $cb = shift;
+{
+    my $wiz = Variable::Magic::wizard
+        data => sub { [$_[1]] },
+        free => sub { $_->() for @{ $_[1] }; () };
 
-    $^H |= 0x020000;
-    $^H{ $SCOPE_HOOK_KEY } = [@{ $^H{ $SCOPE_HOOK_KEY } || [] }, $cb];
+    sub on_scope_end (&) {
+        my $cb = shift;
 
-    my $wiz = Variable::Magic::wizard free => sub {
-        $_->() for @{ delete $_[0]->{ $SCOPE_HOOK_KEY } || [] };
-        ();
-    };
-    Variable::Magic::cast %^H, $wiz;
+        $^H |= 0x020000;
+
+        if (my $stack = Variable::Magic::getdata %^H, $wiz) {
+            push @{ $stack }, $cb;
+        }
+        else {
+            Variable::Magic::cast %^H, $wiz, $cb;
+        }
+    }
 }
 
 =head1 SEE ALSO
