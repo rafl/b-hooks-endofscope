@@ -1,3 +1,9 @@
+0.05  Sun, 04 Jan 2009 20:46:07 +0100
+  * Use Variable::Magic and cast %^H instead Scope::Guard and relying
+    on a timely destruction of objects within %^H. This fixes using
+    on_scope_end in blocks where string evals are compiled as those
+    increment the refcount of objects in %^H on 5.10.
+
 0.04  Mon, 20 Oct 2008 12:56:23 +0200
   * Remove an unused bit from the $^H mask.
 
