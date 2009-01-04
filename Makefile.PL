@@ -5,7 +5,7 @@ use inc::Module::Install;
 name 'B-Hooks-EndOfScope';
 all_from 'lib/B/Hooks/EndOfScope.pm';
 
-requires 'Scope::Guard';
+requires 'Variable::Magic';
 requires 'Sub::Exporter';
 test_requires 'Test::More';
 

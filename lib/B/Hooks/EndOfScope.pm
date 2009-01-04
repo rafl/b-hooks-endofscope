@@ -4,7 +4,7 @@ use warnings;
 package B::Hooks::EndOfScope;
 
 use 5.008000;
-use Scope::Guard;
+use Variable::Magic;
 
 our $VERSION = '0.04';
 
@@ -47,14 +47,20 @@ sub on_scope_end (&) {
     my $cb = shift;
 
     $^H |= 0x020000;
-    $^H{ $SCOPE_HOOK_KEY } = [Scope::Guard->new($cb), @{ $^H{ $SCOPE_HOOK_KEY } || [] }];
+    $^H{ $SCOPE_HOOK_KEY } = [@{ $^H{ $SCOPE_HOOK_KEY } || [] }, $cb];
+
+    my $wiz = Variable::Magic::wizard free => sub {
+        $_->() for @{ delete $_[0]->{ $SCOPE_HOOK_KEY } || [] };
+        ();
+    };
+    Variable::Magic::cast %^H, $wiz;
 }
 
 =head1 SEE ALSO
 
 L<Sub::Exporter>
 
-L<Scope::Guard>
+L<Variable::Magic>
 
 =head1 AUTHOR
 
