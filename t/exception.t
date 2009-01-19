@@ -15,7 +15,7 @@ eval q[
 TODO: {
     local $TODO = 'exceptions in on_scope_end not working yet';
     # that's probably a Variable::Magic issue
-    is($@, 'bar'); 
+    like($@, qr/^bar/);
 }
 
 pass('no segfault');
