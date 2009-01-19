@@ -6,7 +6,7 @@ package B::Hooks::EndOfScope;
 use 5.008000;
 use Variable::Magic;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use Sub::Exporter -setup => {
     exports => ['on_scope_end'],
