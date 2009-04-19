@@ -1,3 +1,7 @@
+0.08  Sun, 19 Apr 2009 19:15:44 +0200
+  * Depend on Variable::Magic 0.34 so exceptions during compile time that
+    trigger a destructor don't cause an exception on 5.10 anymore.
+
 0.07  Fri, 20 Feb 2009 14:22:16 +0100
   * Depend on Variable::Magic 0.31 so exceptions thrown in on_scope_end
     blocks don't lose their error message.
