@@ -19,7 +19,7 @@ B::Hooks::EndOfScope - Execute code after a scope finished compilation
 
 =head1 SYNOPSIS
 
-    on_scope_end { ...  };
+    on_scope_end { ... };
 
 =head1 DESCRIPTION
 
