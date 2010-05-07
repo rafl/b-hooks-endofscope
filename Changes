@@ -1,3 +1,6 @@
+0.09  Fri, 07 May 2010 22:11:49 +0200
+  * Improve distribution metadata.
+
 0.08  Sun, 19 Apr 2009 19:15:44 +0200
   * Depend on Variable::Magic 0.34 so exceptions during compile time that
     trigger a destructor don't cause an exception on 5.10 anymore.
