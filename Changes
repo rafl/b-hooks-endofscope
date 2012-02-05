@@ -1,3 +1,9 @@
+  * Complete pure-perl implementation in addition to the one based on
+    Variable::Magic. You can specify the implementation explicitly by
+    use-ing B::Hooks::EndOfScope::PP or B::Hooks::EndOfScope::XS, or
+    by setting $ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION} to either 'XS'
+    or 'PP'
+
 0.10  Thu, 16 Feb 2012 09:41:54 +0100
   * Stop propagating our magic through localisation.
 
