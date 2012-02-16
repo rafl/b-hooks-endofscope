@@ -38,7 +38,14 @@ This is exported by default. See L<Sub::Exporter> on how to customize it.
 {
     my $wiz = Variable::Magic::wizard
         data => sub { [$_[1]] },
-        free => sub { $_->() for @{ $_[1] }; () };
+        free => sub { $_->() for @{ $_[1] }; () },
+        # When someone localise %^H, our magic doesn't want to be copied
+        # down. We want it to be around only for the scope we've initially
+        # attached ourselfs to. Merely having an svt_local callback achieves
+        # this. If anything wants to attach more magic of our kind to a
+        # localised %^H, things will continue to just work as we'll be attached
+        # with a new and empty callback list.
+        local => sub { () };
 
     sub on_scope_end (&) {
         my $cb = shift;
