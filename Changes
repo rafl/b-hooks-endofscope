@@ -1,3 +1,9 @@
+  * Complete pure-perl implementation in addition to the one based on
+    Variable::Magic. You can specify the implementation explicitly by
+    use-ing B::Hooks::EndOfScope::PP or B::Hooks::EndOfScope::XS, or
+    by setting $ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION} to either 'XS'
+    or 'PP'
+
 0.09  Fri, 07 May 2010 22:11:49 +0200
   * Improve distribution metadata.
 
