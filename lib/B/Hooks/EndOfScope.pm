@@ -1,17 +1,34 @@
-use strict;
-use warnings;
-
 package B::Hooks::EndOfScope;
 # ABSTRACT: Execute code after a scope finished compilation
 
-use 5.008000;
-use Variable::Magic 0.48;
+use strict;
+use warnings;
 
-use Sub::Exporter -setup => {
-    exports => ['on_scope_end'],
-    groups  => { default => ['on_scope_end'] },
+# note - a %^H tie() fallback will probably work on 5.6 as well,
+# if you need to go that low - sane patches passing *all* tests
+# will be gladly accepted
+use 5.008001;
+
+BEGIN {
+  require Module::Implementation;
+  my $impl = Module::Implementation::implementation_for('B::Hooks::EndOfScope') || do {
+    Module::Implementation::build_loader_sub(
+      implementations => [ 'XS', 'PP' ],
+      symbols => [ 'on_scope_end' ],
+    )->();
+    Module::Implementation::implementation_for('B::Hooks::EndOfScope');
+  };
+
+  *on_scope_end = $impl eq 'XS'
+    ? \&B::Hooks::EndOfScope::XS::on_scope_end
+    : \&B::Hooks::EndOfScope::PP::on_scope_end
+  ;
+}
+
+use Sub::Exporter::Progressive -setup => {
+  exports => [ 'on_scope_end' ],
+  groups  => { default => ['on_scope_end'] },
 };
-
 
 =head1 SYNOPSIS
 
@@ -33,33 +50,24 @@ compiled.
 
 This is exported by default. See L<Sub::Exporter> on how to customize it.
 
-=cut
+=head1 PURE-PERL MODE CAVEAT
 
-{
-    my $wiz = Variable::Magic::wizard
-        data => sub { [$_[1]] },
-        free => sub { $_->() for @{ $_[1] }; () },
-        # When someone localise %^H, our magic doesn't want to be copied
-        # down. We want it to be around only for the scope we've initially
-        # attached ourselfs to. Merely having MGf_LOCAL and a noop svt_local
-        # callback achieves this. If anything wants to attach more magic of our
-        # kind to a localised %^H, things will continue to just work as we'll be
-        # attached with a new and empty callback list.
-        local => \undef;
+While L<Variable::Magic> has access to some very dark sorcery to make it
+possible to throw an exception from within a callback, the pure-perl
+implementation does not have access to these hacks. Therefore, what
+would have been a compile-time exception is instead converted to a
+warning, and your execution will continue as if the exception never
+happened.
 
-    sub on_scope_end (&) {
-        my $cb = shift;
+To explicitly request an XS (or PP) implementation one has two choices. Either
+to import from the desired implementation explicitly:
 
-        $^H |= 0x020000;
+ use B::Hooks::EndOfScope::XS
+   or
+ use B::Hooks::EndOfScope::PP
 
-        if (my $stack = Variable::Magic::getdata %^H, $wiz) {
-            push @{ $stack }, $cb;
-        }
-        else {
-            Variable::Magic::cast %^H, $wiz, $cb;
-        }
-    }
-}
+or by setting C<$ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION}> to either C<XS> or
+C<PP>.
 
 =head1 SEE ALSO
 
