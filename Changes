@@ -3,6 +3,8 @@
     use-ing B::Hooks::EndOfScope::PP or B::Hooks::EndOfScope::XS, or
     by setting $ENV{B_HOOKS_ENDOFSCOPE_IMPLEMENTATION} to either 'XS'
     or 'PP'
+  * Switch from using Sub::Exporter to the more conservative
+    Sub::Exporter::Progressive
 
 0.11  Thu, 23 Feb 2012 11:19:18 +0100
   * A minor efficiency improvement.

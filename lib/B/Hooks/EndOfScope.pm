@@ -9,26 +9,24 @@ use warnings;
 # will be gladly accepted
 use 5.008001;
 
-use Module::Implementation;
+BEGIN {
+  require Module::Implementation;
+  my $impl = Module::Implementation::implementation_for('B::Hooks::EndOfScope') || do {
+    Module::Implementation::build_loader_sub(
+      implementations => [ 'XS', 'PP' ],
+      symbols => [ 'on_scope_end' ],
+    )->();
+    Module::Implementation::implementation_for('B::Hooks::EndOfScope');
+  };
 
-use Sub::Exporter -setup => {
-  exports => [on_scope_end => sub {
+  *on_scope_end = $impl eq 'XS'
+    ? \&B::Hooks::EndOfScope::XS::on_scope_end
+    : \&B::Hooks::EndOfScope::PP::on_scope_end
+  ;
+}
 
-    my $impl = Module::Implementation::implementation_for('B::Hooks::EndOfScope') || do {
-      Module::Implementation::build_loader_sub(
-        implementations => [ 'XS',  'PP' ],
-        symbols => [ 'on_scope_end' ],
-      )->();
-      Module::Implementation::implementation_for('B::Hooks::EndOfScope');
-    };
-
-    if ($impl eq 'XS') {
-      \&B::Hooks::EndOfScope::XS::on_scope_end;
-    }
-    else {
-      \&B::Hooks::EndOfScope::PP::on_scope_end;
-    }
-  }],
+use Sub::Exporter::Progressive -setup => {
+  exports => [ 'on_scope_end' ],
   groups  => { default => ['on_scope_end'] },
 };
 
