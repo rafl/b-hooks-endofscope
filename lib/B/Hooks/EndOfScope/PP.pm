@@ -22,7 +22,7 @@ BEGIN {
   }
 }
 
-use Sub::Exporter -setup => {
+use Sub::Exporter::Progressive -setup => {
   exports => ['on_scope_end'],
   groups  => { default => ['on_scope_end'] },
 };

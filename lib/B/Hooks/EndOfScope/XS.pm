@@ -10,7 +10,7 @@ BEGIN {
   Module::Runtime::use_module('Variable::Magic', '0.48');
 }
 
-use Sub::Exporter -setup => {
+use Sub::Exporter::Progressive -setup => {
   exports => ['on_scope_end'],
   groups  => { default => ['on_scope_end'] },
 };
