@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 6;
+use Test::More;
 
 BEGIN { use_ok('B::Hooks::EndOfScope') }
 
@@ -28,3 +28,5 @@ BEGIN {
 }
 
 foo();
+
+done_testing;

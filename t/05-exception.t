@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 2;
+use Test::More;
 
 use B::Hooks::EndOfScope;
 
@@ -14,3 +14,5 @@ eval q[
 
 like($@, qr/^bar/);
 pass('no segfault');
+
+done_testing;
