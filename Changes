@@ -1,3 +1,4 @@
+0.12  Tue, 4 Dec 2012 20:13:00 +0000
   * Complete pure-perl implementation in addition to the one based on
     Variable::Magic. You can specify the implementation explicitly by
     use-ing B::Hooks::EndOfScope::PP or B::Hooks::EndOfScope::XS, or
